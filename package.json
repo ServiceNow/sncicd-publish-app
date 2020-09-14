@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vvoloshchuk/push_app_test.git"
+    "url": "git+https://github.com/vvoloshchuk/push_app.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/vvoloshchuk/push_app_test/issues"
+    "url": "https://github.com/vvoloshchuk/push_app/issues"
   },
-  "homepage": "https://github.com/vvoloshchuk/push_app_test#readme",
+  "homepage": "https://github.com/vvoloshchuk/push_app#readme",
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/jest": "^26.0.12",
