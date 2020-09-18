@@ -1,0 +1,15 @@
+name: 'Publish app to application repository'
+description: 'Publishes the specified application and all of its artifacts to the application repository.'
+inputs:
+  version:
+    description: "Application version to publish"
+    required: false
+  devNotes:
+    description: "Developer notes to store with the application."
+    required: false
+  versionTemplate:
+    description: "Version template ( like 2.4 )."
+    required: false
+runs:
+  using: 'node12'
+  main: 'index.js'
