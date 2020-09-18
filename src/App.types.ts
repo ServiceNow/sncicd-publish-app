@@ -20,9 +20,11 @@ export interface AppProps extends User {
 export interface RequestBody {
     branch_name: branch_name;
 }
-
-export interface requestOptions {
-    sys_id: string;
+export interface Params {
+    sys_id?: string;
+    scope?: string;
+}
+export interface requestOptions extends Params {
     dev_notes?: string;
     version: versionType;
 }
@@ -54,12 +56,12 @@ export enum Errors {
     USERNAME = 'snowUsername is not set',
     PASSWORD = 'snowPassword is not set',
     INSTANCE = 'snowSourceInstance is not set',
-    APPSYSID = 'appSysID is not set',
-    APPSCOPE = 'appScope is not set',
+    APPSYSID = 'appSysID or appScope is not set',
     VERSION_FORMAT = 'No version format selected',
-    GITHUB_TOKEN = 'GITHUB_TOKEN is missing',
+    DETECT_SYS_ID_SCOPE = 'For templateVersion = detect, appSysID and appScope are required',
     GITHUB_WORKSPACE = 'GITHUB_WORKSPACE is missing',
     INCORRECT_CONFIG = 'Configuration is incorrect',
+    INCORRECT_VERSION_FORMAT = 'Incorrect or not selected versionFormat variable',
     CANCELLED = 'Canceled',
     MISSING_VERSION = 'Version is not set in the workflow',
     MISSING_VERSION_TEMPLATE = 'versionTemplate is not set in the workflow',
