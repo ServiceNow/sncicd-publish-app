@@ -10,6 +10,15 @@ inputs:
   versionTemplate:
     description: "Version template ( like 2.4 )."
     required: false
+  versionFormat:
+    description: "exact, detect, autodetect, template"
+    required: false
+outputs:
+  rollbackVersion:
+    description: "Rollback version"
+  newVersion:
+    description: "Incremented version"
+
 runs:
   using: 'node12'
   main: 'index.js'

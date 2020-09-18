@@ -17,6 +17,7 @@ import {
     VersionFormats,
     versionType,
     ErrorResult,
+    Params,
 } from './App.types'
 
 export default class App {
@@ -80,9 +81,17 @@ export default class App {
         try {
             const version = await this.increaseVersion()
             const devNotes = core.getInput('devNotes')
+            const params: Params = {}
+
+            if (this.props.appSysID) {
+                params.sys_id = this.props.appSysID
+            } else {
+                params.scope = this.props.scope
+            }
+
             const options: requestOptions = {
-                sys_id: this.props.appSysID,
-                version: version,
+                ...params,
+                version,
             }
 
             if (devNotes) options.dev_notes = devNotes
@@ -197,11 +206,13 @@ export default class App {
      */
     async increaseVersion(): Promise<string> {
         let version: versionType | false
+        const v: string = (await this.getCurrentAppVersionTableApi(this.props.appSysID)) || ''
 
         switch (this.props.versionFormat) {
             case VersionFormats.Exact: {
                 const input: string | undefined = core.getInput('version')
                 if (!input) throw new Error(Errors.MISSING_VERSION)
+                this.saveVersions(v, input)
                 return input
             }
             case VersionFormats.Template: {
@@ -209,25 +220,26 @@ export default class App {
 
                 if (!template) throw new Error(Errors.MISSING_VERSION_TEMPLATE)
 
-                const v: string | false = await this.getCurrentAppVersionTableApi(this.props.appSysID)
-                const current: number[] = this.convertVersionToArr(v || '')
+                const current: number[] = this.convertVersionToArr(v)
                 const newVersion: string = [template, '.', this.props.githubRunNum].join('')
 
                 if (!this.checkVersion(current, this.convertVersionToArr(newVersion)))
                     throw new Error(Errors.INCORRECT_VERSIONS)
 
+                this.saveVersions(v, newVersion)
                 return newVersion
             }
             case VersionFormats.Detect: {
+                if (!this.props.appSysID && !this.props.scope) throw new Error(Errors.DETECT_SYS_ID_SCOPE)
                 version = this.getCurrentAppVersionFromRepo()
                 break
             }
             case VersionFormats.AutoDetect: {
-                version = await this.getCurrentAppVersionTableApi(this.props.appSysID)
+                version = v
                 break
             }
             default: {
-                throw new Error('Incorrect or not selected versionFormat variable\n')
+                throw new Error(Errors.INCORRECT_VERSION_FORMAT)
             }
         }
 
@@ -244,11 +256,17 @@ export default class App {
             if (!this.checkVersion(current, versionsArr)) throw new Error(Errors.INCORRECT_VERSIONS)
             // convert back to string x.x.x
             version = versionsArr.join('.')
+            this.saveVersions(version, version)
         } else {
             throw new Error('Version not found')
         }
 
         return version
+    }
+
+    saveVersions(current: string, incremented: string): void {
+        core.setOutput('rollbackVersion', current)
+        core.setOutput('newVersion', incremented)
     }
 
     /**

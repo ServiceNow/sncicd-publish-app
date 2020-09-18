@@ -12,12 +12,13 @@ export const run = (): void => {
             snowUsername = '',
             snowPassword = '',
             snowSourceInstance = '',
-            versionFormat = '',
             appSysID = '',
             appScope = '',
             GITHUB_WORKSPACE = '',
             GITHUB_RUN_NUMBER = '',
         } = process.env
+
+        const versionFormat: string | undefined = core.getInput('versionFormat')
 
         if (!snowUsername) {
             errors.push(Errors.USERNAME)
@@ -31,11 +32,8 @@ export const run = (): void => {
         if (!versionFormat) {
             errors.push(Errors.VERSION_FORMAT)
         }
-        if (!appSysID) {
+        if (!appSysID && !appScope) {
             errors.push(Errors.APPSYSID)
-        }
-        if (!appScope) {
-            errors.push(Errors.APPSCOPE)
         }
         if (!GITHUB_WORKSPACE) {
             errors.push(Errors.GITHUB_WORKSPACE)
