@@ -33,7 +33,7 @@ export const run = (): void => {
             errors.push(Errors.VERSION_FORMAT)
         }
         if (!appSysID && !appScope) {
-            errors.push(Errors.APPSYSID)
+            errors.push(Errors.SYSID_OR_SCOPE)
         }
         if (!GITHUB_WORKSPACE) {
             errors.push(Errors.GITHUB_WORKSPACE)
