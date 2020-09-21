@@ -56,7 +56,7 @@ export enum Errors {
     USERNAME = 'snowUsername is not set',
     PASSWORD = 'snowPassword is not set',
     INSTANCE = 'snowSourceInstance is not set',
-    APPSYSID = 'appSysID or appScope is not set',
+    SYSID_OR_SCOPE = 'Please specify scope or sys_id',
     VERSION_FORMAT = 'No version format selected',
     DETECT_SYS_ID_SCOPE = 'For templateVersion = detect, appSysID and appScope are required',
     GITHUB_WORKSPACE = 'GITHUB_WORKSPACE is missing',

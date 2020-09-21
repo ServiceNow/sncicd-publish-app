@@ -64,7 +64,8 @@ export default class App {
      * @returns string  Url to API
      */
     buildRequestUrl(options: requestOptions): string {
-        if (!this.props.snowSourceInstance || !this.props.appSysID) throw new Error(Errors.INCORRECT_CONFIG)
+        if (!this.props.snowSourceInstance || (!this.props.appSysID && !this.props.scope))
+            throw new Error(Errors.INCORRECT_CONFIG)
 
         const params: string = this.buildParams(options)
         return `https://${this.props.snowSourceInstance}.service-now.com/api/sn_cicd/app_repo/publish?${params}`
