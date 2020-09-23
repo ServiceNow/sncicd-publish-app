@@ -41,7 +41,10 @@ export default class App {
             password: props.password,
         }
         this.config = {
-            headers: { Accept: 'application/json' },
+            headers: {
+                'User-Agent': 'sncicd_extint_github',
+                Accept: 'application/json',
+            },
             auth: this.user,
         }
     }
@@ -49,7 +52,10 @@ export default class App {
     buildParams(options: requestOptions): string {
         return (
             Object.keys(options)
-                .filter(key => options.hasOwnProperty(key))
+                .filter(key => {
+                    // @ts-ignore
+                    return options.hasOwnProperty(key) && options[key]
+                })
                 // @ts-ignore
                 .map(key => `${key}=${encodeURIComponent(options[key])}`)
                 .join('&')
@@ -64,7 +70,7 @@ export default class App {
      * @returns string  Url to API
      */
     buildRequestUrl(options: requestOptions): string {
-        if (!this.props.snowSourceInstance || (!this.props.appSysID && !this.props.scope))
+        if (!this.props.snowSourceInstance || (!options.sys_id && !options.scope))
             throw new Error(Errors.INCORRECT_CONFIG)
 
         const params: string = this.buildParams(options)
@@ -193,7 +199,7 @@ export default class App {
      *
      * @version Version to split
      *
-     * @returns [x.x.x]
+     * @returns [x,x,x]
      */
     convertVersionToArr(version: string): number[] {
         return version.split('.').map(v => +v)
@@ -245,6 +251,7 @@ export default class App {
         }
 
         if (version) {
+            const rollBack = version
             //save current version to compare
             const current: number[] = this.convertVersionToArr(version)
             // log the current version
@@ -257,7 +264,7 @@ export default class App {
             if (!this.checkVersion(current, versionsArr)) throw new Error(Errors.INCORRECT_VERSIONS)
             // convert back to string x.x.x
             version = versionsArr.join('.')
-            this.saveVersions(version, version)
+            this.saveVersions(rollBack, version)
         } else {
             throw new Error('Version not found')
         }
@@ -314,8 +321,8 @@ export default class App {
      * and parse for version attribute
      */
     getCurrentAppVersionFromRepo(): string | never {
-        if (this.props.rootFolder) {
-            const projectPath = [this.props.rootFolder, this.props.scope].join('/')
+        if (this.props.workspace) {
+            const projectPath = [this.props.workspace, this.props.scope].join('/')
             console.log('Looking in ' + projectPath)
 
             const match = fs

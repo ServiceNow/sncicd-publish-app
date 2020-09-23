@@ -10,7 +10,7 @@ export interface User {
 export interface AppProps extends User {
     snowSourceInstance: string;
     githubRunNum: string;
-    rootFolder: string;
+    workspace: string;
     versionFormat: string;
     appSysID: string;
     scope: string;
@@ -106,6 +106,7 @@ export enum ResponseStatus {
 
 export interface axiosConfig {
     headers: {
+        'User-Agent': string,
         Accept: string,
     };
     auth: User;

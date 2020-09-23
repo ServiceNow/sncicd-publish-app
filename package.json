@@ -2,10 +2,10 @@
   "name": "publish_app_repo",
   "version": "1.0.0",
   "description": "",
-  "main": "null",
+  "main": "./.github/actions/publish_app/index.ts",
   "scripts": {
     "build": "tsc",
-    "test": "tsc --noEmit && jest",
+    "test": "tsc --noEmit && jest unit",
     "lint": "eslint . --ext .ts",
     "format": "prettier --config prettier.json --write ./**/*.ts"
   },

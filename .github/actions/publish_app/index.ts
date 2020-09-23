@@ -49,7 +49,7 @@ export const run = (): void => {
                 username: snowUsername,
                 password: snowPassword,
                 scope: appScope,
-                rootFolder: GITHUB_WORKSPACE,
+                workspace: GITHUB_WORKSPACE,
                 githubRunNum: GITHUB_RUN_NUMBER,
             }
             const app = new App(props)
