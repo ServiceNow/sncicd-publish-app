@@ -134,7 +134,6 @@ describe(`App lib`, () => {
         })
     })
     it(`publishApp`, async () => {
-
         const get = jest.spyOn(axios, 'get')
         const getResponse: AppVersionResponse = {
             config: {},
