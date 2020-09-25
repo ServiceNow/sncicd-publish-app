@@ -1,7 +1,7 @@
 // import * as github from '@actions/github'
 import * as core from '@actions/core'
-import { AppProps, Errors } from '../../../src/App.types'
-import App from '../../../src/App'
+import { AppProps, Errors } from './src/App.types'
+import App from './src/App'
 
 export const configMsg = '. Configure Github secrets please'
 

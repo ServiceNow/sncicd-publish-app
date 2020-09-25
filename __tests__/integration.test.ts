@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import { configMsg, run } from '../index'
-import { Errors } from '../../../../src/App.types'
+import { Errors } from '../src/App.types'
 
 describe('Install app', () => {
     const original = process.env
