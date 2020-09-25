@@ -69,8 +69,8 @@ Environment variable should be set up in the Step 1
 - snowUsername - Username to ServiceNow instance
 - snowPassword - Password to ServiceNow instance
 - snowSourceInstance ServiceNow instance where application is developing
-- appSysID - Required if app_scope is not specified. The sys_id of the application for which to apply the changes
-- appScope - Required if app_sys_id is not specified. The scope name of the application for which to apply the changes, such as x_aah_custom_app
+- appSysID - Required if app_scope is not specified. The sys_id of the application
+- appScope - Required if app_sys_id is not specified. The scope name of the application, such as x_aah_custom_app
 
 ## Tests
 
