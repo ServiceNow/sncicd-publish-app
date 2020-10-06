@@ -1,4 +1,4 @@
-# ServiceNow Publish Application
+# ServiceNow CI/CD GitHub Action for Publish Application
 
 Publishes the specified application and all of its artifacts to the application repository.
 
