@@ -1,5 +1,5 @@
 {
-  "name": "publish_app_repo",
+  "name": "sncicd-publish-app",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ServiceNow/sncicd_publish_app.git"
+    "url": "git+https://github.com/ServiceNow/sncicd-publish-app.git"
   },
   "author": "SoftServe inc.",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ServiceNow/sncicd_publish_app/issues"
+    "url": "https://github.com/ServiceNow/sncicd-publish-app/issues"
   },
-  "homepage": "https://github.com/ServiceNow/sncicd_publish_app#readme",
+  "homepage": "https://github.com/ServiceNow/sncicd-publish-app#readme",
   "devDependencies": {
     "@types/jest": "^26.0.12",
     "@types/node": "^14.6.2",
