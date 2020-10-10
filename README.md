@@ -18,7 +18,7 @@ Create secrets called
 ```yaml
 - name: Publish Application 
   id: publish_app # id of the step
-  uses: ServiceNow/sncicd_publish_app@1.0 # like username/repo-name
+  uses: ServiceNow/sncicd-publish-app@1.0 # like username/repo-name
   with:
       version: "x.x.x"
       versionTemplate: "x.x"
