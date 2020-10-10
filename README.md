@@ -17,7 +17,7 @@ Create secrets called
 ## Step 3: Configure the GitHub action
 ```yaml
 - name: Publish Application 
-  id: publish_app # id of the step
+  id: sncicd-publish-app # id of the step
   uses: ServiceNow/sncicd-publish-app@1.0 # like username/repo-name
   with:
       version: "x.x.x"
