@@ -1,4 +1,4 @@
-name: 'Publish app to application repository'
+name: 'ServiceNow CI/CD Publish App'
 description: 'Publishes the specified application and all of its artifacts to the application repository.'
 inputs:
   version:
