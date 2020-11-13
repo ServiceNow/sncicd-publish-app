@@ -1,5 +1,5 @@
 name: 'ServiceNow CI/CD Publish App'
-description: 'Publishes the specified application and all of its artifacts to the application repository.'
+description: 'Publishes the specified application to the application repository.'
 author: "ServiceNow"
 inputs:
   version:
