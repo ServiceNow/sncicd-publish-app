@@ -1,5 +1,6 @@
 name: 'ServiceNow CI/CD Publish App'
 description: 'Publishes the specified application and all of its artifacts to the application repository.'
+author: "ServiceNow"
 inputs:
   version:
     description: "Application version to publish"
@@ -18,7 +19,9 @@ outputs:
     description: "Rollback version"
   newVersion:
     description: "Incremented version"
-
 runs:
   using: 'node12'
   main: './lib/index.js'
+branding:
+  icon: 'refresh-ccw'
+  color: 'green'
