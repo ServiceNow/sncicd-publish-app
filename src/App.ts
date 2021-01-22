@@ -322,7 +322,7 @@ export default class App {
      */
     getCurrentAppVersionFromRepo(): string | never {
         if (this.props.workspace) {
-            const projectPath = [this.props.workspace, this.props.scope].join('/')
+            const projectPath = [this.props.workspace, this.props.appSysID].join('/')
             console.log('Looking in ' + projectPath)
 
             const match = fs
