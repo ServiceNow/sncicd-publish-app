@@ -255,13 +255,13 @@ export default class App {
             //save current version to compare
             const current: number[] = this.convertVersionToArr(version)
             // log the current version
-            console.log('Current version is ' + version + ', incrementing')
+            console.log('Current version is ' + version)
             // convert the version we got to [x.x.x]
             const versionsArr = version.split('.').map(digit => +digit)
             // increment
-            versionsArr[2]++
+            //versionsArr[2]++
             // compare versions
-            if (!this.checkVersion(current, versionsArr)) throw new Error(Errors.INCORRECT_VERSIONS)
+            //if (!this.checkVersion(current, versionsArr)) throw new Error(Errors.INCORRECT_VERSIONS)
             // convert back to string x.x.x
             version = versionsArr.join('.')
             this.saveVersions(rollBack, version)
