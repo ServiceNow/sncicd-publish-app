@@ -113,8 +113,8 @@ export default class App {
             if (devNotes) options.dev_notes = devNotes
 
             const url: string = this.buildRequestUrl(options)
-            const response: RequestResponse = await axios.post(url, {}, this.config)
-            await createTag(version, true, GITHUB_SHA);
+            const response: RequestResponse = await axios.post(url, {}, this.config);
+            await createTag(version, true, 'commit_pipelinetest');
             await this.printStatus(response.data.result)
         } catch (error) {
             let message: string
