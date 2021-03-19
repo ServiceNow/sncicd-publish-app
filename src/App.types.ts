@@ -8,6 +8,7 @@ export interface User {
 }
 
 export interface AppProps extends User {
+    token?: string;
     snowSourceInstance: string;
     githubRunNum: string;
     workspace: string;
