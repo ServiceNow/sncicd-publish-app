@@ -20,6 +20,7 @@ export const run = (): void => {
         } = process.env
 
         const versionFormat: string | undefined = core.getInput('versionFormat')
+        const token: string | undefined = core.getInput('token')
 
         if (!snowUsername) {
             errors.push(Errors.USERNAME)
@@ -56,10 +57,11 @@ export const run = (): void => {
                 scope: appScope,
                 workspace: GITHUB_WORKSPACE,
                 githubRunNum: GITHUB_RUN_NUMBER,
-                token: GITHUB_TOKEN,
+                token: token,
             }
             const app = new App(props)
 
+            console.log('Token in index is set to: ' + token)
             app.publishApp().catch(error => {
                 core.setFailed(error.message)
             })
