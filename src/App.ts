@@ -2,8 +2,7 @@ import * as core from '@actions/core'
 import axios, { AxiosResponse } from 'axios'
 import fs from 'fs'
 import path from 'path'
-import { createTag } from './github'
-
+// import { createTag } from './github'
 
 import {
     RequestResult,
@@ -21,6 +20,7 @@ import {
     ErrorResult,
     Params,
 } from './App.types'
+//import { getOctokitOptions } from '@actions/github/lib/utils'
 
 export default class App {
     sleepTime = 3000
@@ -87,6 +87,21 @@ export default class App {
      * @returns         Promise void
      */
     async publishApp(): Promise<void> {
+        const github = require('@actions/github');
+        const core = require('@actions/core');
+        const myToken = this.props.token;
+
+        const octokit = github.getOctokit(myToken)
+        const { data: pullRequest } = await octokit.pulls.get({
+            owner: 'octokit',
+            repo: 'rest.js',
+            pull_number: 123,
+            mediaType: {
+              format: 'diff'
+            }
+        });
+    
+        console.log(pullRequest);
         try {
             console.log('App received token as: ' + this.props.token);
 
@@ -117,7 +132,7 @@ export default class App {
             const url: string = this.buildRequestUrl(options)
             const response: RequestResponse = await axios.post(url, {}, this.config);
             console.log(`TOken is ${this.props.token}`);
-            await createTag(this.props.token, version, true, 'commit_pipelinetest');
+           // await createTag(this.props.token, version, true, 'commit_pipelinetest');
             await this.printStatus(response.data.result)
         } catch (error) {
             let message: string
