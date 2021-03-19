@@ -2,6 +2,8 @@ import * as core from '@actions/core'
 import axios, { AxiosResponse } from 'axios'
 import fs from 'fs'
 import path from 'path'
+import { createTag } from './github'
+
 
 import {
     RequestResult,
@@ -101,10 +103,18 @@ export default class App {
                 version,
             }
 
+            const { GITHUB_SHA } = process.env;
+
+            if (!GITHUB_SHA) {
+                core.setFailed('Missing GITHUB_SHA.');
+                return;
+            }
+
             if (devNotes) options.dev_notes = devNotes
 
             const url: string = this.buildRequestUrl(options)
             const response: RequestResponse = await axios.post(url, {}, this.config)
+            await createTag(version, true, GITHUB_SHA);
             await this.printStatus(response.data.result)
         } catch (error) {
             let message: string
@@ -253,7 +263,7 @@ export default class App {
         if (version) {
             const rollBack = version
             //save current version to compare
-            const current: number[] = this.convertVersionToArr(version)
+            //const current: number[] = this.convertVersionToArr(version)
             // log the current version
             console.log('Current version is ' + version)
             // convert the version we got to [x.x.x]
