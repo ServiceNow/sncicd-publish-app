@@ -8,7 +8,6 @@ export interface User {
 }
 
 export interface AppProps extends User {
-    token?: string;
     snowSourceInstance: string;
     githubRunNum: string;
     workspace: string;
@@ -16,6 +15,7 @@ export interface AppProps extends User {
     appSysID: string;
     scope: string;
     devNotes?: string;
+    token: string;
 }
 
 export interface RequestBody {
@@ -53,6 +53,7 @@ export interface AppVersionResponse extends AxiosResponse {
 
 export type branch_name = string | undefined
 
+
 export enum Errors {
     USERNAME = 'snowUsername is not set',
     PASSWORD = 'snowPassword is not set',
@@ -67,6 +68,7 @@ export enum Errors {
     MISSING_VERSION = 'Version is not set in the workflow',
     MISSING_VERSION_TEMPLATE = 'versionTemplate is not set in the workflow',
     INCORRECT_VERSIONS = 'Versions are incorrect',
+    GITHUB_TOKEN = "GITHUB_TOKEN is missing",
 }
 
 export interface RequestResponse {
