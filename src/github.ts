@@ -4,17 +4,17 @@ import { Await } from './ts';
 
 let octokitSingleton: ReturnType<typeof getOctokit>;
 
-export function getOctokitSingleton() {
+export function getOctokitSingleton(token: string) {
   if (octokitSingleton) {
     return octokitSingleton;
   }
-  const githubToken = core.getInput('github_token');
-  octokitSingleton = getOctokit(githubToken);
+//  const githubToken = core.getInput('github_token');
+  octokitSingleton = getOctokit(token);
   return octokitSingleton;
 }
 
-export async function listTags() {
-  const octokit = getOctokitSingleton();
+export async function listTags(token: string) {
+  const octokit = getOctokitSingleton(token);
 
   const tags = await octokit.repos.listTags({
     ...context.repo,
@@ -24,30 +24,13 @@ export async function listTags() {
   return tags.data;
 }
 
-/**
- * Compare `headRef` to `baseRef` (i.e. baseRef...headRef)
- * @param baseRef - old commit
- * @param headRef - new commit
- */
-export async function compareCommits(baseRef: string, headRef: string) {
-  const octokit = getOctokitSingleton();
-  core.debug(`Comparing commits (${baseRef}...${headRef})`);
-
-  const commits = await octokit.repos.compareCommits({
-    ...context.repo,
-    base: baseRef,
-    head: headRef,
-  });
-
-  return commits.data.commits;
-}
-
 export async function createTag(
+  token: string,
   newTag: string,
   createAnnotatedTag: boolean,
   GITHUB_SHA: string
 ) {
-  const octokit = getOctokitSingleton();
+  const octokit = getOctokitSingleton(token);
   let annotatedTag:
     | Await<ReturnType<typeof octokit.git.createTag>>
     | undefined = undefined;

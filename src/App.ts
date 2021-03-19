@@ -115,7 +115,7 @@ export default class App {
             const url: string = this.buildRequestUrl(options)
             const response: RequestResponse = await axios.post(url, {}, this.config);
             console.log(`TOken is ${this.props.token}`);
-            await createTag(version, true, 'commit_pipelinetest');
+            await createTag(this.props.token, version, true, 'commit_pipelinetest');
             await this.printStatus(response.data.result)
         } catch (error) {
             let message: string
