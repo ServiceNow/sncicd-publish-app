@@ -88,6 +88,8 @@ export default class App {
      */
     async publishApp(): Promise<void> {
         try {
+            console.log('App received token as: ' + this.props.token);
+
             const version = await this.increaseVersion()
             const devNotes = core.getInput('devNotes')
             const params: Params = {}
