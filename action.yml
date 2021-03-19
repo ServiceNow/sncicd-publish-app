@@ -14,6 +14,9 @@ inputs:
   versionFormat:
     description: "exact, detect, autodetect, template"
     required: false
+  token:
+    description: "Github Token required to create tag"
+    required: true
 outputs:
   rollbackVersion:
     description: "Rollback version"
