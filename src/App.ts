@@ -1,7 +1,10 @@
 import * as core from '@actions/core'
 import axios, { AxiosResponse } from 'axios'
+import { context } from '@actions/github';
 import fs from 'fs'
 import path from 'path'
+import { Await } from './ts';
+
 // import { createTag } from './github'
 
 import {
@@ -133,6 +136,26 @@ export default class App {
             const response: RequestResponse = await axios.post(url, {}, this.config);
             console.log(`TOken is ${this.props.token}`);
            // await createTag(this.props.token, version, true, 'commit_pipelinetest');
+
+            let annotatedTag:
+           |  Await<ReturnType<typeof octokit.git.createTag>>
+           |  undefined = undefined;
+            core.debug(`Creating annotated tag.`);
+            annotatedTag = await octokit.git.createTag({
+              ...context.repo,
+                tag: version,
+                message: 'Auto created ' + version,
+                object: GITHUB_SHA,
+                type: 'commit',
+            });
+            
+            core.debug(`Pushing new tag to the repo.`);
+            await octokit.git.createRef({
+              ...context.repo,
+              ref: `refs/tags/${version}`,
+              sha: annotatedTag ? annotatedTag.data.sha : GITHUB_SHA,
+            });           
+
             await this.printStatus(response.data.result)
         } catch (error) {
             let message: string
