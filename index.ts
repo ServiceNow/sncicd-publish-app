@@ -57,7 +57,6 @@ export const run = (): void => {
             }
             const app = new App(props)
 
-            console.log('Token in index is set to: ' + token)
             app.publishApp().catch(error => {
                 core.setFailed(error.message)
             })

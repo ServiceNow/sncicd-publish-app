@@ -95,18 +95,8 @@ export default class App {
         const myToken = this.props.token;
 
         const octokit = github.getOctokit(myToken)
-        const { data: pullRequest } = await octokit.pulls.get({
-            owner: 'octokit',
-            repo: 'rest.js',
-            pull_number: 123,
-            mediaType: {
-              format: 'diff'
-            }
-        });
     
-        console.log(pullRequest);
         try {
-            console.log('App received token as: ' + this.props.token);
 
             const version = await this.increaseVersion()
             const devNotes = core.getInput('devNotes')
@@ -134,9 +124,8 @@ export default class App {
 
             const url: string = this.buildRequestUrl(options)
             const response: RequestResponse = await axios.post(url, {}, this.config);
-            console.log(`TOken is ${this.props.token}`);
-           // await createTag(this.props.token, version, true, 'commit_pipelinetest');
 
+            // create tag in repository
             let annotatedTag:
            |  Await<ReturnType<typeof octokit.git.createTag>>
            |  undefined = undefined;
