@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import axios, { AxiosResponse } from 'axios'
-import { context } from '@actions/github';
+import { context, getOctokit } from '@actions/github';
 import fs from 'fs'
 import path from 'path'
 import { Await } from './ts';
@@ -90,11 +90,9 @@ export default class App {
      * @returns         Promise void
      */
     async publishApp(): Promise<void> {
-        const github = require('@actions/github');
-        const core = require('@actions/core');
         const myToken = this.props.token;
 
-        const octokit = github.getOctokit(myToken)
+        const octokit = getOctokit(myToken)
     
         try {
 
