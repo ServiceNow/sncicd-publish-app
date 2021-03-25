@@ -1,7 +1,9 @@
 import * as core from '@actions/core'
 import axios, { AxiosResponse } from 'axios'
+import { context, getOctokit } from '@actions/github';
 import fs from 'fs'
 import path from 'path'
+import { Await } from './ts';
 
 import {
     RequestResult,
@@ -85,7 +87,12 @@ export default class App {
      * @returns         Promise void
      */
     async publishApp(): Promise<void> {
+        const myToken = this.props.token;
+
+        const octokit = getOctokit(myToken)
+    
         try {
+
             const version = await this.increaseVersion()
             const devNotes = core.getInput('devNotes')
             const params: Params = {}
@@ -101,10 +108,38 @@ export default class App {
                 version,
             }
 
+            const { GITHUB_SHA } = process.env;
+
+            if (!GITHUB_SHA) {
+                core.setFailed('Missing GITHUB_SHA.');
+                return;
+            }
+
             if (devNotes) options.dev_notes = devNotes
 
             const url: string = this.buildRequestUrl(options)
-            const response: RequestResponse = await axios.post(url, {}, this.config)
+            const response: RequestResponse = await axios.post(url, {}, this.config);
+
+            // create tag in repository
+            let annotatedTag:
+           |  Await<ReturnType<typeof octokit.git.createTag>>
+           |  undefined = undefined;
+            core.debug(`Creating annotated tag.`);
+            annotatedTag = await octokit.git.createTag({
+              ...context.repo,
+                tag: version,
+                message: 'Auto created ' + version,
+                object: GITHUB_SHA,
+                type: 'commit',
+            });
+            
+            core.debug(`Pushing new tag to the repo.`);
+            await octokit.git.createRef({
+              ...context.repo,
+              ref: `refs/tags/${version}`,
+              sha: annotatedTag ? annotatedTag.data.sha : GITHUB_SHA,
+            });           
+
             await this.printStatus(response.data.result)
         } catch (error) {
             let message: string
@@ -253,7 +288,7 @@ export default class App {
         if (version) {
             const rollBack = version
             //save current version to compare
-            const current: number[] = this.convertVersionToArr(version)
+            //const current: number[] = this.convertVersionToArr(version)
             // log the current version
             console.log('Current version is ' + version)
             // convert the version we got to [x.x.x]

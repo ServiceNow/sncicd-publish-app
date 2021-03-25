@@ -19,6 +19,7 @@ export const run = (): void => {
         } = process.env
 
         const versionFormat: string | undefined = core.getInput('versionFormat')
+        const token: string | undefined = core.getInput('token')
 
         if (!snowUsername) {
             errors.push(Errors.USERNAME)
@@ -35,6 +36,7 @@ export const run = (): void => {
         if (!appSysID && !appScope) {
             errors.push(Errors.SYSID_OR_SCOPE)
         }
+        
         if (!GITHUB_WORKSPACE) {
             errors.push(Errors.GITHUB_WORKSPACE)
         }
@@ -51,6 +53,7 @@ export const run = (): void => {
                 scope: appScope,
                 workspace: GITHUB_WORKSPACE,
                 githubRunNum: GITHUB_RUN_NUMBER,
+                token: token,
             }
             const app = new App(props)
 
