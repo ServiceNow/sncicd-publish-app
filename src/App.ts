@@ -5,8 +5,6 @@ import fs from 'fs'
 import path from 'path'
 import { Await } from './ts';
 
-// import { createTag } from './github'
-
 import {
     RequestResult,
     AppProps,
@@ -23,7 +21,6 @@ import {
     ErrorResult,
     Params,
 } from './App.types'
-//import { getOctokitOptions } from '@actions/github/lib/utils'
 
 export default class App {
     sleepTime = 3000
