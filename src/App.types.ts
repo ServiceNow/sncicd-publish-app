@@ -8,7 +8,7 @@ export interface User {
 }
 
 export interface AppProps extends User {
-    snowSourceInstance: string;
+    nowSourceInstance: string;
     githubRunNum: string;
     workspace: string;
     versionFormat: string;
@@ -53,9 +53,9 @@ export interface AppVersionResponse extends AxiosResponse {
 export type branch_name = string | undefined
 
 export enum Errors {
-    USERNAME = 'snowUsername is not set',
-    PASSWORD = 'snowPassword is not set',
-    INSTANCE = 'snowSourceInstance is not set',
+    USERNAME = 'nowUsername is not set',
+    PASSWORD = 'nowPassword is not set',
+    INSTANCE = 'nowSourceInstance is not set',
     SYSID_OR_SCOPE = 'Please specify scope or sys_id',
     VERSION_FORMAT = 'No version format selected',
     DETECT_SYS_ID_SCOPE = 'For templateVersion = detect, appSysID and appScope are required',

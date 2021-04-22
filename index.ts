@@ -9,9 +9,9 @@ export const run = (): void => {
     try {
         const errors: string[] = []
         const {
-            snowUsername = '',
-            snowPassword = '',
-            snowSourceInstance = '',
+            nowUsername = '',
+            nowPassword = '',
+            nowSourceInstance = '',
             appSysID = '',
             appScope = '',
             GITHUB_WORKSPACE = '',
@@ -20,13 +20,13 @@ export const run = (): void => {
 
         const versionFormat: string | undefined = core.getInput('versionFormat')
 
-        if (!snowUsername) {
+        if (!nowUsername) {
             errors.push(Errors.USERNAME)
         }
-        if (!snowPassword) {
+        if (!nowPassword) {
             errors.push(Errors.PASSWORD)
         }
-        if (!snowSourceInstance) {
+        if (!nowSourceInstance) {
             errors.push(Errors.INSTANCE)
         }
         if (!versionFormat) {
@@ -45,9 +45,9 @@ export const run = (): void => {
             const props: AppProps = {
                 versionFormat,
                 appSysID,
-                snowSourceInstance,
-                username: snowUsername,
-                password: snowPassword,
+                nowSourceInstance,
+                username: nowUsername,
+                password: nowPassword,
                 scope: appScope,
                 workspace: GITHUB_WORKSPACE,
                 githubRunNum: GITHUB_RUN_NUMBER,
