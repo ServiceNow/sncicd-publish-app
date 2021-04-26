@@ -66,6 +66,7 @@ export enum Errors {
     MISSING_VERSION = 'Version is not set in the workflow',
     MISSING_VERSION_TEMPLATE = 'versionTemplate is not set in the workflow',
     INCORRECT_VERSIONS = 'Versions are incorrect',
+    NEGATIVE_INCREMENT = 'Increment should be positive or zero',
 }
 
 export interface RequestResponse {

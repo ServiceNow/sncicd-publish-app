@@ -146,10 +146,10 @@ export default class App {
      * @returns         void
      */
     async printStatus(result: RequestResult): Promise<void> {
-        if (+result.status === ResponseStatus.Pending) console.log(result.status_label)
+        if (+result.status === ResponseStatus.Pending) core.info(result.status_label)
 
         if (+result.status === ResponseStatus.Running || +result.status === ResponseStatus.Successful)
-            console.log(`${result.status_label}: ${result.percent_complete}%`)
+            core.info(`${result.status_label}: ${result.percent_complete}%`)
 
         // Recursion to check the status of the request
         if (+result.status < ResponseStatus.Successful) {
@@ -161,8 +161,8 @@ export default class App {
         } else {
             // Log the success result, the step of the pipeline is success as well
             if (+result.status === ResponseStatus.Successful) {
-                console.log(result.status_message)
-                console.log(result.status_detail)
+                core.info(result.status_message)
+                core.info(result.status_detail)
             }
 
             // Log the failed result, the step throw an error to fail the step
@@ -242,7 +242,7 @@ export default class App {
                 break
             }
             case VersionFormats.AutoDetect: {
-                version = v
+                version = v !== 'none' ? v : false
                 break
             }
             default: {
@@ -253,15 +253,19 @@ export default class App {
         if (version) {
             const rollBack = version
             //save current version to compare
-            // const current: number[] = this.convertVersionToArr(version)
+            const current: number[] = this.convertVersionToArr(version)
             // log the current version
-            console.log('Current version is ' + version)
+            core.info('Current version is ' + version)
             // convert the version we got to [x.x.x]
             const versionsArr = version.split('.').map(digit => +digit)
+            const incrementBy: number = +core.getInput('incrementBy') || 1
+            if (incrementBy < 0) {
+                throw new Error(Errors.NEGATIVE_INCREMENT)
+            }
             // increment
-            //versionsArr[2]++
+            versionsArr[versionsArr.length - 1] += incrementBy
             // compare versions
-            //if (!this.checkVersion(current, versionsArr)) throw new Error(Errors.INCORRECT_VERSIONS)
+            if (!this.checkVersion(current, versionsArr)) throw new Error(Errors.INCORRECT_VERSIONS)
             // convert back to string x.x.x
             version = versionsArr.join('.')
             this.saveVersions(rollBack, version)
@@ -278,40 +282,71 @@ export default class App {
     }
 
     /**
+     * Recursion function
+     *
+     * @param urls string[]             List of API URLs to get versions(sys_app,sys_app_customization tables)
+     * @returns Promise<string | false> Version or false if not found
+     */
+    async getVersionWithDefinedSysId(urls: string[]): Promise<string | false> {
+        const url = urls.pop()
+
+        // @ts-ignore
+        return (
+            axios
+                // @ts-ignore
+                .get(url, this.config)
+                .then((response: AppVersionResponse) => {
+                    return response.data.result.version || false
+                })
+                .catch(e => {
+                    if (e.response.status === 404 && urls.length) {
+                        return this.getVersionWithDefinedSysId(urls)
+                    } else {
+                        throw new Error(this.errCodeMessages[e.response.status])
+                    }
+                })
+        )
+    }
+
+    /**
+     *
+     * @param url string                sys_app table url(sys_app_customization doesn't has scope field in response,
+     *                                  so there is no sense to look for a version in this table if sys_id is undef)
+     * @returns Promise<string | false> Version or false if not found
+     */
+    async getVersionWithUndefinedSysId(url: string): Promise<string | false> {
+        return axios
+            .get(url, this.config)
+            .then((response: AxiosResponse) => {
+                const result: ScopedVersion[] = response.data.result
+                const found = result.find(e => {
+                    return e.scope === this.props.scope
+                })
+
+                return found ? found.version : false
+            })
+            .catch(e => {
+                throw new Error(this.errCodeMessages[e.response.status])
+            })
+    }
+
+    /**
      * get current app version via now/table rest api
      *
      * @param appSysID
      *
      * @returns {Promise<string|boolean>}
      */
-    getCurrentAppVersionTableApi(appSysID: string): Promise<string | false> {
-        if (appSysID) {
-            return axios
-                .get(
-                    `https://${this.props.nowSourceInstance}.service-now.com/api/now/table/sys_app/${appSysID}?sysparm_fields=version`,
-                    this.config,
-                )
-                .then((response: AppVersionResponse) => {
-                    return response.data.result.version || false
-                })
-                .catch(e => {
-                    throw new Error(this.errCodeMessages[e.response.status])
-                })
-        } else {
-            return axios
-                .get(
-                    `https://${this.props.nowSourceInstance}.service-now.com/api/now/table/sys_app?sysparm_fields=scope,version`,
-                    this.config,
-                )
-                .then((response: AxiosResponse) => {
-                    const result: ScopedVersion[] = response.data.result
-                    const found = result.find(e => e.scope === this.props.scope)
+    async getCurrentAppVersionTableApi(appSysID: string): Promise<string | false> {
+        const appSysIdParam = appSysID ? '/' + appSysID : ''
+        const sysAppUrl = `https://${this.props.nowSourceInstance}.service-now.com/api/now/table/sys_app${appSysIdParam}?sysparm_fields=version,scope`
+        const sysAppCustomizationUrl = `https://${this.props.nowSourceInstance}.service-now.com/api/now/table/sys_app_customization${appSysIdParam}?sysparm_fields=version`
+        const urls = [sysAppUrl, sysAppCustomizationUrl]
 
-                    return found ? found.version : false
-                })
-                .catch(e => {
-                    throw new Error(this.errCodeMessages[e.response.status])
-                })
+        if (appSysID) {
+            return await this.getVersionWithDefinedSysId(urls)
+        } else {
+            return this.getVersionWithUndefinedSysId(sysAppUrl)
         }
     }
 
