@@ -15,6 +15,7 @@ export interface AppProps extends User {
     appSysID: string;
     scope: string;
     devNotes?: string;
+    isAppCustomization?: boolean;
 }
 
 export interface RequestBody {
@@ -67,6 +68,7 @@ export enum Errors {
     MISSING_VERSION_TEMPLATE = 'versionTemplate is not set in the workflow',
     INCORRECT_VERSIONS = 'Versions are incorrect',
     NEGATIVE_INCREMENT = 'Increment should be positive or zero',
+    NO_SYS_ID = 'sys_id not defined',
 }
 
 export interface RequestResponse {

@@ -17,6 +17,9 @@ inputs:
   incrementBy:
     description: "Increment version level, should be positive or zero, Default: 1."
     required: false
+  isAppCustomization:
+    description: "If true, require appSysID instead of appScope"
+    required: false
 outputs:
   rollbackVersion:
     description: "Rollback version"

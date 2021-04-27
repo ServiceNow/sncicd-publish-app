@@ -54,6 +54,19 @@ describe('Install app', () => {
         expect(core.setFailed).toHaveBeenCalledWith(`${errors}${configMsg}`)
     })
 
+    it('isAppCustomization, scope and not app_sys_id', () => {
+        // simulate the secrets are not set
+        process.env.appSysID = ''
+        process.env.appScope = 'abc'
+        process.env.isAppCustomization = 'true'
+
+        const errors = [Errors.NO_SYS_ID].join('. ')
+
+        run()
+
+        expect(core.setFailed).toHaveBeenCalledWith(`${errors}${configMsg}`)
+    })
+
     it('success with creds', async () => {
         // do not set process env
         // workflow run the tests
