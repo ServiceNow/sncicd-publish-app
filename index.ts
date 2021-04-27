@@ -39,8 +39,11 @@ export const run = (): void => {
         if (!GITHUB_WORKSPACE) {
             errors.push(Errors.GITHUB_WORKSPACE)
         }
-        if (isAppCustomization && !appSysID) {
+        if (isAppCustomization === 'true' && !appSysID) {
             errors.push(Errors.NO_SYS_ID)
+        }
+        if (isAppCustomization === 'true' && appScope) {
+            errors.push(Errors.REMOVE_SCOPE)
         }
 
         if (errors.length) {

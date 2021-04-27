@@ -69,6 +69,7 @@ export enum Errors {
     INCORRECT_VERSIONS = 'Versions are incorrect',
     NEGATIVE_INCREMENT = 'Increment should be positive or zero',
     NO_SYS_ID = 'sys_id not defined',
+    REMOVE_SCOPE = 'appScope should not be defined if isAppCustomization=true',
 }
 
 export interface RequestResponse {

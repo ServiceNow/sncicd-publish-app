@@ -60,7 +60,20 @@ describe('Install app', () => {
         process.env.appScope = 'abc'
         process.env.isAppCustomization = 'true'
 
-        const errors = [Errors.NO_SYS_ID].join('. ')
+        const errors = [Errors.NO_SYS_ID, Errors.REMOVE_SCOPE].join('. ')
+
+        run()
+
+        expect(core.setFailed).toHaveBeenCalledWith(`${errors}${configMsg}`)
+    })
+
+    it('isAppCustomization, app_sys_id, app_scope', () => {
+        // simulate the secrets are not set
+        process.env.appSysID = '123'
+        process.env.appScope = 'abc'
+        process.env.isAppCustomization = 'true'
+
+        const errors = [Errors.REMOVE_SCOPE].join('. ')
 
         run()
 
