@@ -253,19 +253,19 @@ export default class App {
         if (version) {
             const rollBack = version
             //save current version to compare
-            const current: number[] = this.convertVersionToArr(version)
+            // const current: number[] = this.convertVersionToArr(version)
             // log the current version
             core.info('Current version is ' + version)
             // convert the version we got to [x.x.x]
             const versionsArr = version.split('.').map(digit => +digit)
-            const incrementBy: number = +core.getInput('incrementBy') || 1
+            const incrementBy: number = +core.getInput('incrementBy') || 0
             if (incrementBy < 0) {
                 throw new Error(Errors.NEGATIVE_INCREMENT)
             }
             // increment
             versionsArr[versionsArr.length - 1] += incrementBy
             // compare versions
-            if (!this.checkVersion(current, versionsArr)) throw new Error(Errors.INCORRECT_VERSIONS)
+            // if (!this.checkVersion(current, versionsArr)) throw new Error(Errors.INCORRECT_VERSIONS)
             // convert back to string x.x.x
             version = versionsArr.join('.')
             this.saveVersions(rollBack, version)

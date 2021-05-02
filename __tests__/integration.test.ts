@@ -12,10 +12,10 @@ describe('Install app', () => {
     })
     const envs = {
         appSysID: '123',
-        password: 'test',
+        nowPassword: 'test',
         scope: '',
         nowSourceInstance: 'test',
-        username: 'test',
+        nowUsername: 'test',
         GITHUB_WORKSPACE: 'test',
     }
     beforeEach(() => {
