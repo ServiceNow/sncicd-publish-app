@@ -14,12 +14,12 @@ export const run = (): void => {
             nowSourceInstance = '',
             appSysID = '',
             appScope = '',
-            isAppCustomization = '',
             GITHUB_WORKSPACE = '',
             GITHUB_RUN_NUMBER = '',
         } = process.env
 
         const versionFormat: string | undefined = core.getInput('versionFormat')
+        const isAppCustomization: boolean = core.getInput('isAppCustomization') === 'true' ? true : false;
 
         if (!nowUsername) {
             errors.push(Errors.USERNAME)
@@ -39,10 +39,10 @@ export const run = (): void => {
         if (!GITHUB_WORKSPACE) {
             errors.push(Errors.GITHUB_WORKSPACE)
         }
-        if (isAppCustomization === 'true' && !appSysID) {
+        if (isAppCustomization && !appSysID) {
             errors.push(Errors.NO_SYS_ID)
         }
-        if (isAppCustomization === 'true' && appScope) {
+        if (isAppCustomization && appScope) {
             errors.push(Errors.REMOVE_SCOPE)
         }
 
@@ -56,7 +56,7 @@ export const run = (): void => {
                 username: nowUsername,
                 password: nowPassword,
                 scope: appScope,
-                isAppCustomization: isAppCustomization === 'true' ? true : false,
+                isAppCustomization,
                 workspace: GITHUB_WORKSPACE,
                 githubRunNum: GITHUB_RUN_NUMBER,
             }
