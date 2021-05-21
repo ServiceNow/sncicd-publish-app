@@ -7,8 +7,8 @@ let props: AppProps
 const inputs: any = {
     version: '1.1.1',
     versionTemplate: '1.1',
+    incrementBy: '1',
     devNotes: 'dev notes bla bla',
-    incrementBy: 2
 }
 
 describe(`App lib`, () => {
@@ -128,7 +128,7 @@ describe(`App lib`, () => {
             props.versionFormat = 'detect'
             const app = new App(props)
             const version = await app.increaseVersion()
-            expect(version).toEqual('1.1.4')
+            expect(version).toEqual('1.1.3')
             expect(log).toHaveBeenCalledWith(`Looking in ${[props.workspace, props.appSysID].join('/')}`)
             expect(setOutputMock).toHaveBeenCalledWith('rollbackVersion', '1.1.2') // version from the file sys_app_SYS_ID.xml
             expect(setOutputMock).toHaveBeenCalledWith('newVersion', version)

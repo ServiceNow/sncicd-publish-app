@@ -214,7 +214,6 @@ export default class App {
     async increaseVersion(): Promise<string> {
         let version: versionType | false
         const v: string = (await this.getCurrentAppVersionTableApi(this.props.appSysID)) || ''
-
         switch (this.props.versionFormat) {
             case VersionFormats.Exact: {
                 const input: string | undefined = core.getInput('version')
@@ -253,7 +252,7 @@ export default class App {
         if (version) {
             const rollBack = version
             //save current version to compare
-            // const current: number[] = this.convertVersionToArr(version)
+            const current: number[] = this.convertVersionToArr(version)
             // log the current version
             core.info('Current version is ' + version)
             // convert the version we got to [x.x.x]
@@ -265,7 +264,7 @@ export default class App {
             // increment
             versionsArr[versionsArr.length - 1] += incrementBy
             // compare versions
-            // if (!this.checkVersion(current, versionsArr)) throw new Error(Errors.INCORRECT_VERSIONS)
+            if (!this.checkVersion(current, versionsArr)) throw new Error(Errors.INCORRECT_VERSIONS)
             // convert back to string x.x.x
             version = versionsArr.join('.')
             this.saveVersions(rollBack, version)
@@ -298,12 +297,8 @@ export default class App {
                 .then((response: AppVersionResponse) => {
                     return response.data.result.version || false
                 })
-                .catch(e => {
-                    if (e.response.status === 404 && urls.length) {
-                        return this.getVersionWithDefinedSysId(urls)
-                    } else {
-                        throw new Error(this.errCodeMessages[e.response.status])
-                    }
+                .catch(() => {
+                    return false
                 })
         )
     }
