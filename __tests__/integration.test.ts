@@ -12,10 +12,10 @@ describe('Install app', () => {
     })
     const envs = {
         appSysID: '123',
-        password: 'test',
+        nowPassword: 'test',
         scope: '',
         nowSourceInstance: 'test',
-        username: 'test',
+        nowUsername: 'test',
         GITHUB_WORKSPACE: 'test',
     }
     beforeEach(() => {
@@ -48,6 +48,32 @@ describe('Install app', () => {
             GITHUB_WORKSPACE: 'test',
         }
         const errors = [Errors.USERNAME, Errors.PASSWORD].join('. ')
+
+        run()
+
+        expect(core.setFailed).toHaveBeenCalledWith(`${errors}${configMsg}`)
+    })
+
+    it('isAppCustomization, scope and not app_sys_id', () => {
+        // simulate the secrets are not set
+        process.env.appSysID = ''
+        process.env.appScope = 'abc'
+        process.env.isAppCustomization = 'true'
+
+        const errors = [Errors.NO_SYS_ID, Errors.REMOVE_SCOPE].join('. ')
+
+        run()
+
+        expect(core.setFailed).toHaveBeenCalledWith(`${errors}${configMsg}`)
+    })
+
+    it('isAppCustomization, app_sys_id, app_scope', () => {
+        // simulate the secrets are not set
+        process.env.appSysID = '123'
+        process.env.appScope = 'abc'
+        process.env.isAppCustomization = 'true'
+
+        const errors = [Errors.REMOVE_SCOPE].join('. ')
 
         run()
 

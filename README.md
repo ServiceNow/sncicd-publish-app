@@ -31,6 +31,7 @@ https://github.com/ServiceNow/sncicd_githubworkflow
       versionTemplate: "x.x"
       devNotes: "string"
       versionFormat: exact
+      isAppCustomization: false
   env:
     nowUsername: ${{ secrets.NOW_USERNAME }}
     nowPassword: ${{ secrets.NOW_PASSWORD }}
@@ -40,6 +41,7 @@ https://github.com/ServiceNow/sncicd_githubworkflow
 ```
 Inputs:
 - **version** - Application version to publish. Only for "exact" version format is required
+- **isAppCustomization** - if true, require appSysID instead of appScope.
 - **devNotes** - Developer notes to store with the application.
 - **versionTemplate** - Version template ( like 2.4 ).
 - **versionFormat** - exact, detect, autodetect, template

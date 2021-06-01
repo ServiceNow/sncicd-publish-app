@@ -7,6 +7,7 @@ let props: AppProps
 const inputs: any = {
     version: '1.1.1',
     versionTemplate: '1.1',
+    incrementBy: '1',
     devNotes: 'dev notes bla bla',
 }
 
@@ -120,7 +121,7 @@ describe(`App lib`, () => {
             expect(setOutputMock).toHaveBeenCalledWith('newVersion', version)
         })
 
-        xit(`detect`, async () => {
+        it(`detect`, async () => {
             get.mockResolvedValue(response)
             props.appSysID = 'SYS_ID'
             props.scope = 'scope'
@@ -128,7 +129,7 @@ describe(`App lib`, () => {
             const app = new App(props)
             const version = await app.increaseVersion()
             expect(version).toEqual('1.1.3')
-            expect(log).toHaveBeenCalledWith(`Looking in ${[props.workspace, props.scope].join('/')}`)
+            expect(log).toHaveBeenCalledWith(`Looking in ${[props.workspace, props.appSysID].join('/')}`)
             expect(setOutputMock).toHaveBeenCalledWith('rollbackVersion', '1.1.2') // version from the file sys_app_SYS_ID.xml
             expect(setOutputMock).toHaveBeenCalledWith('newVersion', version)
         })

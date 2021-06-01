@@ -19,6 +19,7 @@ export const run = (): void => {
         } = process.env
 
         const versionFormat: string | undefined = core.getInput('versionFormat')
+        const isAppCustomization: boolean = core.getInput('isAppCustomization') === 'true' ? true : false;
 
         if (!nowUsername) {
             errors.push(Errors.USERNAME)
@@ -38,6 +39,12 @@ export const run = (): void => {
         if (!GITHUB_WORKSPACE) {
             errors.push(Errors.GITHUB_WORKSPACE)
         }
+        if (isAppCustomization && !appSysID) {
+            errors.push(Errors.NO_SYS_ID)
+        }
+        if (isAppCustomization && appScope) {
+            errors.push(Errors.REMOVE_SCOPE)
+        }
 
         if (errors.length) {
             core.setFailed(`${errors.join('. ')}${configMsg}`)
@@ -49,6 +56,7 @@ export const run = (): void => {
                 username: nowUsername,
                 password: nowPassword,
                 scope: appScope,
+                isAppCustomization,
                 workspace: GITHUB_WORKSPACE,
                 githubRunNum: GITHUB_RUN_NUMBER,
             }
