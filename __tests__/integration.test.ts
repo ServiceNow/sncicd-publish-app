@@ -11,11 +11,12 @@ describe('Install app', () => {
         return inputs[name]
     })
     const envs = {
-        appSysID: '',
+        appSysID: '123',
         password: 'test',
         scope: '',
-        snowSourceInstance: 'test',
+        nowSourceInstance: 'test',
         username: 'test',
+        GITHUB_WORKSPACE: 'test',
     }
     beforeEach(() => {
         jest.resetModules()
@@ -42,7 +43,7 @@ describe('Install app', () => {
     it('app_sys_id and not app_scope', () => {
         // simulate the secrets are not set
         process.env = {
-            snowSourceInstance: 'test',
+            nowSourceInstance: 'test',
             appSysID: '123',
             GITHUB_WORKSPACE: 'test',
         }
@@ -53,11 +54,11 @@ describe('Install app', () => {
         expect(core.setFailed).toHaveBeenCalledWith(`${errors}${configMsg}`)
     })
 
-    it('success with creds', () => {
+    it('success with creds', async () => {
         // do not set process env
         // workflow run the tests
         // it will take envs from the workflow
-        run()
+        await run()
         expect(core.setFailed).not.toHaveBeenCalled()
     })
 })

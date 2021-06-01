@@ -25,7 +25,7 @@ export default class App {
     user: User
     config: axiosConfig
     props: AppProps
-    errCodeMessages: any = {
+    errCodeMessages: Record<number, string> = {
         401: 'The user credentials are incorrect.',
         403: 'Forbidden. The user is not an admin or does not have the CICD role.',
         404: 'Not found. The requested item was not found.',
@@ -70,17 +70,17 @@ export default class App {
      * @returns string  Url to API
      */
     buildRequestUrl(options: requestOptions): string {
-        if (!this.props.snowSourceInstance || (!options.sys_id && !options.scope))
+        if (!this.props.nowSourceInstance || (!options.sys_id && !options.scope))
             throw new Error(Errors.INCORRECT_CONFIG)
 
         const params: string = this.buildParams(options)
-        return `https://${this.props.snowSourceInstance}.service-now.com/api/sn_cicd/app_repo/publish?${params}`
+        return `https://${this.props.nowSourceInstance}.service-now.com/api/sn_cicd/app_repo/publish?${params}`
     }
 
     /**
      * Checks version
      * Increment version
-     * Makes the request to SNow api publish_app
+     * Makes the request to ServiceNow api publish_app
      * Prints the progress
      * @returns         Promise void
      */
@@ -253,7 +253,7 @@ export default class App {
         if (version) {
             const rollBack = version
             //save current version to compare
-            const current: number[] = this.convertVersionToArr(version)
+            // const current: number[] = this.convertVersionToArr(version)
             // log the current version
             console.log('Current version is ' + version)
             // convert the version we got to [x.x.x]
@@ -288,7 +288,7 @@ export default class App {
         if (appSysID) {
             return axios
                 .get(
-                    `https://${this.props.snowSourceInstance}.service-now.com/api/now/table/sys_app/${appSysID}?sysparm_fields=version`,
+                    `https://${this.props.nowSourceInstance}.service-now.com/api/now/table/sys_app/${appSysID}?sysparm_fields=version`,
                     this.config,
                 )
                 .then((response: AppVersionResponse) => {
@@ -300,7 +300,7 @@ export default class App {
         } else {
             return axios
                 .get(
-                    `https://${this.props.snowSourceInstance}.service-now.com/api/now/table/sys_app?sysparm_fields=scope,version`,
+                    `https://${this.props.nowSourceInstance}.service-now.com/api/now/table/sys_app?sysparm_fields=scope,version`,
                     this.config,
                 )
                 .then((response: AxiosResponse) => {

@@ -13,9 +13,9 @@ Publishes the specified application and all of its artifacts to the application 
 On GitHub, go in your repository settings, click on the secret _Secrets_ and create a new secret.
 
 Create secrets called 
-- `SNOW_USERNAME`
-- `SNOW_PASSWORD`
-- `SNOW_SOURCE_INSTANCE` only the **domain** string is required from the instance URL, for example https://**domain**.service-now.com
+- `NOW_USERNAME`
+- `NOW_PASSWORD`
+- `NOW_SOURCE_INSTANCE` only the **domain** string is required from the instance URL, for example https://**domain**.service-now.com
 - `APP_SYS_ID` or `APP_SCOPE`
 
 ## Step 3: Example Workflow Template
@@ -32,9 +32,9 @@ https://github.com/ServiceNow/sncicd_githubworkflow
       devNotes: "string"
       versionFormat: exact
   env:
-    snowUsername: ${{ secrets.SNOW_USERNAME }}
-    snowPassword: ${{ secrets.SNOW_PASSWORD }}
-    snowSourceInstance: ${{ secrets.SNOW_SOURCE_INSTANCE }}
+    nowUsername: ${{ secrets.NOW_USERNAME }}
+    nowPassword: ${{ secrets.NOW_PASSWORD }}
+    nowSourceInstance: ${{ secrets.NOW_SOURCE_INSTANCE }}
     appSysID: ${{ secrets.APP_SYS_ID }}
     appScope: ${{ secrets.APP_SCOPE }}
 ```
@@ -53,9 +53,9 @@ Outputs:
 - **newVersion** - Incremented version. Used to install application step.
     
 Environment variable should be set up in the Step 1
-- snowUsername - Username to ServiceNow instance
-- snowPassword - Password to ServiceNow instance
-- snowSourceInstance ServiceNow instance where application is developing
+- nowUsername - Username to ServiceNow instance
+- nowPassword - Password to ServiceNow instance
+- nowSourceInstance ServiceNow instance where application is developing
 - appSysID - Required if app_scope is not specified. The sys_id of the application
 - appScope - Required if app_sys_id is not specified. The scope name of the application, such as x_aah_custom_app
 
