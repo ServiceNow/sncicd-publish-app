@@ -178,23 +178,6 @@ export default class App {
     }
 
     /**
-     * Compare versions. Incremented version
-     * should be greater that current
-     *
-     * @param current       Current version of the app converted to [x.x.x]
-     * @param newVersion    Incremented version converted to [x.x.x]
-     *
-     * @returns             Compare result
-     */
-    checkVersion(current: number[], newVersion: number[]): boolean {
-        return (
-            newVersion[0] > current[0] ||
-            (newVersion[0] === current[0] && newVersion[1] > current[1]) ||
-            (newVersion[0] === current[0] && newVersion[1] === current[1] && newVersion[2] > current[2])
-        )
-    }
-
-    /**
      * Convert string to array of numbers like [x.x.x]
      *
      * @version Version to split
@@ -226,11 +209,7 @@ export default class App {
 
                 if (!template) throw new Error(Errors.MISSING_VERSION_TEMPLATE)
 
-                const current: number[] = this.convertVersionToArr(v)
                 const newVersion: string = [template, '.', this.props.githubRunNum].join('')
-
-                if (!this.checkVersion(current, this.convertVersionToArr(newVersion)))
-                    throw new Error(Errors.INCORRECT_VERSIONS)
 
                 this.saveVersions(v, newVersion)
                 return newVersion
@@ -251,8 +230,6 @@ export default class App {
 
         if (version) {
             const rollBack = version
-            //save current version to compare
-            const current: number[] = this.convertVersionToArr(version)
             // log the current version
             core.info('Current version is ' + version)
             // convert the version we got to [x.x.x]
@@ -263,8 +240,6 @@ export default class App {
             }
             // increment
             versionsArr[versionsArr.length - 1] += incrementBy
-            // compare versions
-            if (!this.checkVersion(current, versionsArr)) throw new Error(Errors.INCORRECT_VERSIONS)
             // convert back to string x.x.x
             version = versionsArr.join('.')
             this.saveVersions(rollBack, version)
