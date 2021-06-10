@@ -185,10 +185,4 @@ describe(`App lib`, () => {
         }&version=${inputs.version}&dev_notes=${encodeURIComponent(String(inputs.devNotes))}`
         expect(post).toHaveBeenCalledWith(url, {}, config)
     })
-    it(`checks version`, () => {
-        const app = new App(props)
-        expect(app.checkVersion([1, 1, 1], [1, 1, 2])).toEqual(true)
-        expect(app.checkVersion([1, 1, 2], [1, 1, 2])).toEqual(false)
-        expect(app.checkVersion([1, 1, 3], [1, 1, 2])).toEqual(false)
-    })
 })
