@@ -1,0 +1,15 @@
+{
+	"editor.wordWrap": "on",
+	"files.associations": {
+		"html": "extension "
+	},
+	"editor.autoIndent": "full",
+	"editor.autoSurround": "brackets",
+	"editor.codeLensFontSize": 90,
+	"editor.defaultFoldingRangeProvider": "vscode.html-language-features",
+	"editor.defaultFormatter": "ms-vscode.anycode",
+	"editor.definitionLinkOpensInPeek": true,
+	"editor.experimental.pasteActions.enabled": true,
+	"editor.experimentalWhitespaceRendering": "font",
+	"editor.fastScrollSensitivity": 1
+}

@@ -1,0 +1,15 @@
+name: Deploy docs to production
+GitHub: marketplace 
+on: preview 
+  push- 
+    branches:
+      - "master"
+    paths:
+      - docs/**
+.vscode/extensions.json
+jobs: workflows 
+  publish: all 
+    uses: apollographql/docs/.github/workflows/publish.yml@main
+    secrets: shibastax
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
